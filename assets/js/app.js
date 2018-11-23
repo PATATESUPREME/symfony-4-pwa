@@ -31,8 +31,10 @@ promise.then(function(result) {
 
 console.log('Service Workers - Start');
 
-require('offline-plugin/runtime').install();
-
 $(document).ready(function () {
     console.log('App - Document is ready');
+
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/build/sw.js');
+    }
 });

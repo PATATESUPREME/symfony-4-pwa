@@ -1,8 +1,5 @@
-// let path = require('path');
 let Encore = require('@symfony/webpack-encore');
-// let OfflinePlugin = require(path.resolve(process.cwd(), 'node_modules', 'offline-plugin'));
-let OfflinePlugin = require('offline-plugin');
-let UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+let SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 Encore
 // directory where compiled assets will be stored
@@ -37,9 +34,9 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    .enableSourceMaps(!Encore.isProduction())
+    .enableSourceMaps(Encore.isProduction())
     // enables hashed filename (e.g. app.abc123.css)
-    .enableVersioning(Encore.isProduction())
+    // .enableVersioning(Encore.isProduction())
 
     // enables Sass/SCSS support
     //.enableSassLoader()
@@ -49,46 +46,29 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     // .autoProvidejQuery()
-    .addPlugin(new UglifyJsPlugin())
-    .addPlugin(new OfflinePlugin({
-        appShell: '/',
-        strategy: 'changed',
-        responseStrategy: 'network-first',
-        publicPath: '/build/',
-        ServiceWorker: {
-            cacheName: 'ServiceWorkerSymfony4',
-            events: !Encore.isProduction(),
-            minify: !Encore.isProduction(),
-            entry: './assets/js/sw.js',
-            output: './../sw.js'
-        },
-        externals: [
-            '/',
-            '/favicon.ico',
-            '/offline',
-            '/test'
-        ],
-        excludes: [
-            '**/.*',
-            '**/*.map',
-            '**/*.gz',
-            '**/not-cached*'
-        ],
-        cacheMaps: [
-            {
-                match: function(requestUrl) {
-                    console.log(requestUrl);
-                    return new URL('/', location);
-                },
-                requestTypes: ['navigate']
-            }
-        ],
-        caches: {
-            main: [':rest:'],
-            additional: [':externals:']
-        },
-        AppCache: null
-    }))
+    .addPlugin(new SWPrecacheWebpackPlugin(
+        {
+            cacheId: 'ServiceWorkerSymfony4',
+            dontCacheBustUrlsMatching: /\.\w{8}\./,
+            filename: 'sw.js',
+            minify: Encore.isProduction(),
+            navigateFallback: '/offline',
+            staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+            runtimeCaching: [{
+                urlPattern: /^\/$/,
+                handler: 'networkFirst'
+            }, {
+                urlPattern: /favicon\.ico$/,
+                handler: 'networkFirst'
+            }, {
+                urlPattern: /offline$/,
+                handler: 'networkFirst'
+            }, {
+                urlPattern: /test$/,
+                handler: 'networkFirst'
+            }]
+        }
+    ))
 ;
 
 module.exports = Encore.getWebpackConfig();
