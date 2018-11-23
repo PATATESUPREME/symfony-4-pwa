@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Website offline !{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Website offline !</h1>
+
+        The website is offline...
+
+        <a href="{{ path('homepage') }}">Homepage</a>
+    </div>
+{% endblock %}
