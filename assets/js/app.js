@@ -35,6 +35,14 @@ $(document).ready(function () {
     console.log('App - Document is ready');
 
     if('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/build/sw.js');
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw-handler.js')
+                .then(swReg => {
+                    console.log('Service Worker is registered', swReg);
+                })
+                .catch(err => {
+                    console.error('Service Worker Error', err);
+                });
+        });
     }
 });

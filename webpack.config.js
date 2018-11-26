@@ -1,5 +1,5 @@
 let Encore = require('@symfony/webpack-encore');
-let SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const {InjectManifest} = require('workbox-webpack-plugin');
 
 Encore
 // directory where compiled assets will be stored
@@ -46,29 +46,17 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     // .autoProvidejQuery()
-    .addPlugin(new SWPrecacheWebpackPlugin(
-        {
-            cacheId: 'ServiceWorkerSymfony4',
-            dontCacheBustUrlsMatching: /\.\w{8}\./,
-            filename: 'sw.js',
-            minify: Encore.isProduction(),
-            navigateFallback: '/offline',
-            staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-            runtimeCaching: [{
-                urlPattern: /^\/$/,
-                handler: 'networkFirst'
-            }, {
-                urlPattern: /favicon\.ico$/,
-                handler: 'networkFirst'
-            }, {
-                urlPattern: /offline$/,
-                handler: 'networkFirst'
-            }, {
-                urlPattern: /test$/,
-                handler: 'networkFirst'
-            }]
-        }
-    ))
+    .addPlugin(new InjectManifest({
+        include: [/\.css$/, /\.js$/],
+        exclude: [/\.jpg$/, /\.png$/],
+        swSrc: './assets/js/sw-handler.js',
+        swDest: './../sw-handler.js',
+        globPatterns: [
+            '**/*.{js,png,html,css,ico}',
+        ],
+        globIgnores: ['**/not-cached'],
+        dontCacheBustUrlsMatching: /\.\w{8}\./
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();
