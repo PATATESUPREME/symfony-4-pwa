@@ -71,6 +71,9 @@
     "nette/robot-loader": {
         "version": "v3.1.0"
     },
+    "nette/schema": {
+        "version": "v1.0.2"
+    },
     "nette/utils": {
         "version": "v2.5.3"
     },
@@ -149,6 +152,9 @@
             "ref": "181d766db0eb468f41337f9b2d9d5b61ba1ee441"
         }
     },
+    "symfony/contracts": {
+        "version": "v1.1.0"
+    },
     "symfony/debug": {
         "version": "v4.1.7"
     },
@@ -212,6 +218,9 @@
     "symfony/polyfill-php72": {
         "version": "v1.10.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
+    },
     "symfony/process": {
         "version": "v4.1.7"
     },
@@ -241,6 +250,9 @@
             "version": "3.3",
             "ref": "f8a63faa0d9521526499c0a8f403c9964ecb0527"
         }
+    },
+    "symfony/service-contracts": {
+        "version": "v2.1.3"
     },
     "symfony/stopwatch": {
         "version": "v4.1.7"
