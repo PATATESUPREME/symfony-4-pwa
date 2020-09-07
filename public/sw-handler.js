@@ -1,4 +1,4 @@
-importScripts("/build/precache-manifest.35e61ebcc5eb906473fab36981f71089.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
+importScripts("/build/precache-manifest.71e520479875d0a15667f053570072df.js", "https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 const filesToCache = [
     '/',
@@ -10,6 +10,8 @@ const filesToCache = [
 ];
 
 const staticCacheName = 'pages-cache-v2';
+
+console.log('Self', self);
 
 self.addEventListener('install', event => {
     console.log('Attempting to install service worker and cache static assets');
@@ -63,4 +65,47 @@ self.addEventListener('activate', event => {
         })
     );
 });
+// console.log('Workbox', workbox);
+//
+// if (workbox) {
+//     console.log(`Yay! Workbox is loaded 🎉`);
+//
+//     workbox.precaching.precacheAndRoute([]);
+//
+//     workbox.routing.registerRoute(
+//         /(.*)articles(.*)\.(?:png|gif|jpg)/,
+//         workbox.strategies.cacheFirst({
+//             cacheName: 'images-cache',
+//             plugins: [
+//                 new workbox.expiration.Plugin({
+//                     maxEntries: 50,
+//                     maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+//                 })
+//             ]
+//         })
+//     );
+//
+//     const articleHandler = workbox.strategies.networkFirst({
+//         cacheName: 'articles-cache',
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxEntries: 50,
+//             })
+//         ]
+//     });
+//
+//     workbox.routing.registerRoute(/(.*)article(.*)\.html/, args => {
+//         return articleHandler.handle(args).then(response => {
+//             if (!response) {
+//                 return caches.match('pages/offline.html');
+//             } else if (response.status === 404) {
+//                 return caches.match('pages/404.html');
+//             }
+//             return response;
+//         });
+//     });
+//
+// } else {
+//     console.log(`Boo! Workbox didn't load 😬`);
+// }
 

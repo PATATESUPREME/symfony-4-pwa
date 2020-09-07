@@ -38,10 +38,10 @@ $(document).ready(function () {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw-handler.js')
                 .then(swReg => {
-                    console.log('Service Worker is registered', swReg);
+                    console.log('Service Worker registered! 😎', swReg);
                 })
                 .catch(err => {
-                    console.error('Service Worker Error', err);
+                    console.log('Registration failed 😫 ', err);
                 });
         });
     }

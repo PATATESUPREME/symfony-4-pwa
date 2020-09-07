@@ -10,10 +10,12 @@ CYAN="\\033[1;36m"
 
 export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
 export CLICOLOR=1
+include .env
 
 SYMFONY         = php bin/console
 COMPOSER        = composer
 YARN            = yarn
+ENV             = ${APP_ENV}
 
 ##
 ##================================================================
@@ -38,15 +40,13 @@ vendor: composer.lock
 
 assets: ## Run Webpack Encore to compile assets
 assets: node_modules
-	@echo -n "Environment : [dev] " && read ans && [ -z $$ans ] && ans="dev"; \
-	$(YARN) run encore $$ans
+	$(YARN) run encore $(ENV)
 
 watch: ## Watch assets with Webpack Encore
 	$(YARN) run encore dev --watch
 
 cache: ## Clear the caches
-	@echo -n "Environment : [dev] " && read ans && [ -z $$ans ] && ans="dev"; \
-	$(SYMFONY) cache:clear -v --env=$$ans
+	$(SYMFONY) cache:clear -v
 
 install: ## Install (or refresh) the project
 install: vendor assets htaccess
